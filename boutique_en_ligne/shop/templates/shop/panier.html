@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Panier</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Optionally, add Bootstrap JS and jQuery CDN for interactive components -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+<!-- Incluez le CSRF token pour les formulaires POST -->
+<!-- Custom styles for this template -->
+<link href="{% static 'css/style.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <h1 class="text-center my-4">Votre Panier</h1></br>
+    
+
+
+    <div class="container">
+        <a href="{% url 'achat' user_id=request.user.id %}"  class="btn btn-success float-right">Retour au produit</a>
+        <ul class="list-group col-md-8 offset-md-2">
+            {{user.first_name}} {{user.last_name}}
+            {% for item in panier.panierproduit_set.all %}
+            
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>
+                    {{ item.produit.nom }} - {{ item.quantite }} x {{ item.produit.prix }}FCFA
+                </span>
+                <span>
+                    <a href="{% url 'supprimer_du_panier' item.id %}" class="btn btn-danger btn-sm">Supprimer</a>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="col-md-8 offset-md-2">
+            <p class="text-right font-weight-bold mt-4">Total: {{ panier.total }}FCFA</p>
+            <a href="{% url 'payment' %}" class="btn btn-success float-right">Payer</a>
+        </div>
+    </div>
+</body>
+</html>
